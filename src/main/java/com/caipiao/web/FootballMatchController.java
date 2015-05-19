@@ -1,7 +1,6 @@
 package com.caipiao.web;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ public class FootballMatchController {
 	
 	@RequestMapping(value="/matchList",produces={"application/json;charset=utf-8"})
 	@ResponseBody
-	public List<Map<String,Object>> matchList(FootballMatch footballMatchQuery){
-		return footballMatchService.queryFootballMatch(footballMatchQuery);
+	public List<FootballMatch> matchList(FootballMatch footballMatchQuery){
+		return footballMatchService.queryFootballMatchOld(footballMatchQuery);
 	}
 }

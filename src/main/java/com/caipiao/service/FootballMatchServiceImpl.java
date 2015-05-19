@@ -12,6 +12,7 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.caipiao.dbutil.HumpPropertyBeanProcessor;
 import com.caipiao.entity.FootballMatch;
@@ -30,11 +31,18 @@ public class FootballMatchServiceImpl implements FootballMatchService{
 
 	@Override
     public List<FootballMatch> queryFootballMatchOld(FootballMatch footballMatchQuery){
-    	
-    	QueryRunner qr = new QueryRunner();
-        String sql = "select * from football_match where type_code='jczq-bqc' ";
+		QueryRunner qr = new QueryRunner(jdbcTemplate.getDataSource());
+		StringBuilder sql = new StringBuilder("select * from football_match where 1=1  ");
+        if(!StringUtils.isEmpty(footballMatchQuery.getTypeCode())){
+        	sql.append(" and type_code = '"+footballMatchQuery.getTypeCode()+"'");
+        }
+        if(StringUtils.isEmpty(footballMatchQuery.getPdate())){
+        	throw new RuntimeException("parameter pdate[yyyy-MM-dd] can't be null");
+        }else{
+        	sql.append(" and pdate = '"+footballMatchQuery.getPdate()+"'");
+        }
         try {
-			return qr.query(jdbcTemplate.getDataSource().getConnection(),sql, rsh);
+			return qr.query(sql.toString(), rsh);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -43,11 +51,10 @@ public class FootballMatchServiceImpl implements FootballMatchService{
 	
     @Override
 	public List<Map<String,Object>> queryFootballMatch(FootballMatch footballMatchQuery){
-		
-		QueryRunner qr = new QueryRunner();
+    	QueryRunner qr = new QueryRunner(jdbcTemplate.getDataSource());
 		String sql = "select * from football_match where type_code='jczq-bqc' ";
 		try {
-			return qr.query(jdbcTemplate.getDataSource().getConnection(),sql, rsh_map);
+			return qr.query(sql, rsh_map);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
