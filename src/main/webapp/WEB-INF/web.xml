@@ -13,7 +13,7 @@
   	</context-param>
   	<context-param>
     	<param-name>log4j</param-name>
-    	<param-value>WEB-INF/classes/log4j.xml</param-value>
+    	<param-value>classpath:log4j.xml</param-value>
  	</context-param>
  	
   	<listener>
