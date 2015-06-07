@@ -1,6 +1,7 @@
 package com.caipiao.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.caipiao.dbutil.HumpPropertyBeanProcessor;
 import com.caipiao.entity.FootballMatch;
@@ -29,12 +31,20 @@ public class FootballMatchServiceImpl implements FootballMatchService{
 	private static ResultSetHandler<List<Map<String,Object>>> rsh_map = new MapListHandler();
 
 	@Override
-    public List<FootballMatch> queryFootballMatchOld(FootballMatch footballMatchQuery){
-    	
+    public List<FootballMatch> queryFootballMatchOld(FootballMatch queryDto){
     	QueryRunner qr = new QueryRunner();
-        String sql = "select * from football_match where type_code='jczq-bqc' ";
+        StringBuilder sql = new StringBuilder("select * from football_match where 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if(!StringUtils.isEmpty(queryDto.getTypeCode())){
+        	sql.append(" and type_code = ?");
+        	params.add(queryDto.getTypeCode());
+        }
+        if(!StringUtils.isEmpty(queryDto.getPdate())){
+        	sql.append(" and pdate = ?");
+        	params.add(queryDto.getPdate());
+        }
         try {
-			return qr.query(jdbcTemplate.getDataSource().getConnection(),sql, rsh);
+			return qr.query(jdbcTemplate.getDataSource().getConnection(), sql.toString(),rsh,params.toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

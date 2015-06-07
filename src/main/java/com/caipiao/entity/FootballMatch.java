@@ -1,7 +1,8 @@
 package com.caipiao.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  *  足球比赛信息通用实体
  *  包含：竞彩足球、足彩胜负、任选9场、6场半全场、4场进球彩
@@ -14,7 +15,6 @@ public class FootballMatch implements Serializable{
 
 	private static final long serialVersionUID = 2400701508523147985L;
 	
-	private Integer footballMatchId;
 	private String typeCode;
 	private String typeName;
 	private String pdate;
@@ -41,15 +41,10 @@ public class FootballMatch implements Serializable{
 	private String spf6;
 	private String spf7;
 	private String spf8;
-	private Date updateDate;
-	private Date createDate;
 	
-	public Integer getFootballMatchId() {
-		return footballMatchId;
-	}
-	public void setFootballMatchId(Integer footballMatchId) {
-		this.footballMatchId = footballMatchId;
-	}
+	private String userName;
+	private String password;
+	
 	public String getPdate() {
 		return pdate;
 	}
@@ -134,12 +129,7 @@ public class FootballMatch implements Serializable{
 	public void setSpf3(String spf3) {
 		this.spf3 = spf3;
 	}
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+
 	public String getTypeCode() {
 		return typeCode;
 	}
@@ -200,12 +190,6 @@ public class FootballMatch implements Serializable{
 	public void setSpf8(String spf8) {
 		this.spf8 = spf8;
 	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
 	public String getExpect() {
 		return expect;
 	}
@@ -218,4 +202,20 @@ public class FootballMatch implements Serializable{
 	public void setLotteryPeriodId(Integer lotteryPeriodId) {
 		this.lotteryPeriodId = lotteryPeriodId;
 	}
+	@JsonIgnore
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
 }
